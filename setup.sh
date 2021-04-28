@@ -30,11 +30,11 @@ function usage(){
 Install and configure your Zclef from zaclys.com
 
   Usage:
-        $0 --user <username> --identityfile <path_to_file> --mountpoint <mountpoint>
+        $0 --user <username> --identityfile <path_to_file> [--mountpoint <mountpoint>]
 
     -u  |  --user              Username for connection
     -i  |  --identityfile      Path to your personnal private key
-    -m  |  --mountpoint        Path to your mount point
+    -m  |  --mountpoint        Path to your mount point > Default: $HOME/zclef
 
 EOF
 }
