@@ -133,12 +133,15 @@ if [ $? -eq 0 ]; then
       umount $MOUNTPOINT
 
     Pour simplifier l'utilisation futur vous pouvez ajouter la ligne suivante dans /etc/fstab:
-    $USER@$SSHFS_SRV:/zclef     $MOUNTPOINT     fuse.sshfs     rw,user,noauto,port=$SSH_PORT,allow_other,reconnect,transform_symlinks,_netdev,BatchMode=yes,identityfile=$IDENTITYFILE  0 0
+    $USER@$SSHFS_SRV:/zclef     $MOUNTPOINT     fuse.sshfs     rw,user,noauto,port=$SSHFS_PORT,allow_other,reconnect,transform_symlinks,_netdev,BatchMode=yes,identityfile=$IDENTITYFILE  0 0
+
+    Puis décommenter la ligne user_allow_other dans /etc/fuse.conf:
+      sed -i 's/#user_allow_other/user_allow_other/g' /etc/fuse.conf
 
     Ensuite il vous suffira de monter la zclef avec la commande:
       mount $MOUNTPOINT
 
-    Si vous ne souhaitez pas modifier le fstab vous pouvez également ajouter les deux lignes suivantes à votre ~/.bashrc
+    Si vous ne souhaitez ou ne pouvez pas modifier le fstab vous pouvez également ajouter les deux lignes suivantes à votre ~/.bashrc
       alias zclefon='sshfs -o "StrictHostKeyChecking=accept-new" -o "IdentityFile=$IDENTITYFILE" -o "Port=$SSHFS_PORT" $USER@$SSHFS_SRV:zclef $MOUNTPOINT'
       alias zclefoff="umount $MOUNTPOINT"
 
