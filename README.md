@@ -1,9 +1,6 @@
-Status: En cours.
-Ce script n'est pas encore pleinement fonctionnel.
-
 # zclef Setup
 
-Script pour simplifier la première connection à votre zclef
+Script pour simplifier la première connection à votre zclef  
 Ce service est proposé au abonnés de [Zaclys](www.zaclys.com)
 - [Lien vers le service](https://www.zaclys.com/zcle/)
 - [Wiki](https://wiki.zaclys.com/index.php/Installation_de_la_zclef_sous_Linux)

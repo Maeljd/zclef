@@ -3,15 +3,20 @@
 #
 # Author: Maël
 # Date: 2021/04/28
+# Version: 1.0
 # Desc:
-#   - Configure sshfs connection for Zclef
-#
+#   - Configurer la première connexion au sevice zclef de Zaclys
+#   - Support Debian / Ubuntu
+#   - Ne necessite sudo ou root que pour l'installation de sshfs.
+#     - Si sshfs est déjà installé pas de droits particuliers requis.
+#   - Montage par défaut dans ~/zclef
 ###
 
 DEBUG=false
 
 SSHFS_SRV="sshfs.zaclys.com"
 SSHFS_PORT="22"
+OS="$(awk '/^ID=/' /etc/*-release | awk -F'=' '{ print tolower($2) }')"
 
 function debug(){
   cat << EOF
@@ -20,6 +25,7 @@ function debug(){
   MountPoint      : $MOUNTPOINT
   SSHFS Server    : $SSHFS_SRV
   SSHFS_PORT      : $SSHFS_PORT
+  OS Detected     : $OS
 EOF
 }
 
@@ -66,12 +72,12 @@ function main(){
 
 if [ ! $(which sshfs) ]; then
   if [ ! $(which sudo) ]; then
+    _msg ko "Sudo est requis pour installer sshfs."
     cat << EOF
-
-    Sudo est requis pour installer sshfs.
-    Si vous ne souhaitez pas installer sudo, vous pouvez installer sshfs par vous même.
-      apt install sshfs -y
+          Si vous ne souhaitez pas installer sudo, vous pouvez installer sshfs par vous même.
+          Puis relancer ce script.
 EOF
+  exit 1
   fi
 fi
 
@@ -86,7 +92,7 @@ if [ ! -f $IDENTITYFILE ] || [ -z $IDENTITYFILE ]; then
   exit 1
 fi
 
-## Check if MountPoint is define, if not use the default $HOME/zclef
+## Check if MountPoint is define, if not use the default ~/zclef
 if [ -z $MOUNTPOINT ];then
   _msg info "Le point de montage n'est pas spécifié. La zclef sera monté sur $HOME/zclef"
   MOUNTPOINT="$HOME/zclef"
@@ -104,7 +110,7 @@ fi
 ## Check if sshfs is installed
 if [ ! $(which sshfs) ]; then
   _msg info "Installation de SSHFS"
-  sudo apt -qq install sshfs -y
+  sudo $PKG_MANAGER -qq install $PKG_NAME -y
   if [ $? -eq 0 ]; then
     _msg ok "SSHFS installé avec succès"
   elif [ $? -ne 0 ]; then
@@ -120,7 +126,7 @@ if [ $? -eq 0 ]; then
   _msg ok "Connection établie"
   cat << EOF
 
-===================================================================
+======================================================================================================================================
 
     Votre Zclef est maintenant connecté et monté sur $MOUNTPOINT.
     Pour la déconnecter:
@@ -138,7 +144,7 @@ if [ $? -eq 0 ]; then
 
     Ensuite il vous suffira d'utiliser les deux alias zclefon et zclefoff pour monter et démonter votre zclef.
 
-===================================================================
+======================================================================================================================================
 
 EOF
 elif [ $? -ne 0 ]; then
@@ -148,8 +154,6 @@ fi
 }
 
 while [[ $# -gt 0 ]]; do
-  key="$1"
-
   case "$1" in
     -h | --help)
       usage
@@ -178,6 +182,19 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+if echo "$OS" | grep -q "debian"; then
+  _msg info "OS detecté : Debian"
+  PKG_MANAGER="apt"
+  PKG_NAME="sshfs"
+elif echo "$OS" | grep -q "ubuntu"; then
+  _msg info "OS detecté : Ubuntu"
+  PKG_MANAGER="apt"
+  PKG_NAME="sshfs"
+else
+  _msg ko "Impossible de detecter l'OS"
+  exit1
+fi
 
 if $DEBUG; then
   debug
