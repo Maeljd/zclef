@@ -7,16 +7,20 @@ Ce service est proposé au abonnés de [Zaclys](www.zaclys.com)
 
 ## Prérequis
 
-1. Créer votre pair de clef ssh (ex: ssh-keygen -t rsa -b 4096 -f my_zaclys_key)  
+1. Créer votre pair de clef ssh (ex: `ssh-keygen -t ed25519 -f my_zaclys_key`)  
 2. Envoyer votre clef public au support [zaclys support](https://www.zaclys.com/contact/) pour obtenir votre nom d'utilisateur
 
 ## Utilisation
 
 ```bash
-setup.sh --user <my_username> --identityfile <path_to_my_private_key> [--mountpoint your_mount_point]
+./setup.sh --user <my_username> --identityfile <path_to_my_private_key> [--mountpoint your_mount_point]
 
     -u  |  --user              Username for connection
     -i  |  --identityfile      Path to your personnal private key
     -m  |  --mountpoint        Path to your mount point
 ```
-nb: --mountpoint est optionnel. Par défaut le montage se fera sur `$HOME/zclef`
+nb: --mountpoint est optionnel. Par défaut le montage se fera sur `~/zclef`
+
+# Todo:
+
+- Support other OS
