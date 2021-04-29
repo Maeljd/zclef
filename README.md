@@ -21,6 +21,9 @@ Ce service est proposé au abonnés de [Zaclys](www.zaclys.com)
 ```
 nb: --mountpoint est optionnel. Par défaut le montage se fera sur `~/zclef`
 
-# Todo:
+# OS supportés / testés
 
-- Support other OS
+* Debian 10
+* Ubuntu 20.10
+* Fedora 33
+* Centos 8

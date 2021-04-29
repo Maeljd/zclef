@@ -32,7 +32,7 @@ EOF
 function usage(){
   cat <<EOF
 
-Installation et connection de votre Zclef
+Installation et connexion de votre Zclef
 
   Utilisation:
         $0 --user <username> --identityfile <path_to_file> [--mountpoint <mountpoint>]
@@ -123,7 +123,7 @@ fi
 sshfs -o "StrictHostKeyChecking=accept-new" -o "IdentityFile=$IDENTITYFILE" -o "Port=$SSHFS_PORT" "$USER"@"$SSHFS_SRV":zclef $MOUNTPOINT
 
 if [ $? -eq 0 ]; then
-  _msg ok "Connection établie"
+  _msg ok "connexion établie"
   cat << EOF
 
 ======================================================================================================================================
@@ -148,7 +148,7 @@ if [ $? -eq 0 ]; then
 
 EOF
 elif [ $? -ne 0 ]; then
-  _msg ko "Problème lors de la tentative de connection"
+  _msg ko "Problème lors de la tentative de connexion"
   exit 1
 fi
 }
@@ -161,19 +161,16 @@ while [[ $# -gt 0 ]]; do
       ;;
     -u | --user)
       USER="$2"
-      shift # past argument
-      shift # past value
+      shift 2
       ;;
     -i | --identityfile)
       # Convert relativ path to absolute path (required by sshfs options)
       IDENTITYFILE="$(readlink -f $2)";
-      shift
-      shift
+      shift 2
       ;;
     -m | --mountpoint)
       MOUNTPOINT="$2";
-      shift
-      shift
+      shift 2
       ;;
       *)
       echo "$1 : Option inconnue"
@@ -195,9 +192,13 @@ elif echo "$OS" | grep -q "fedora"; then
   _msg info "OS detecté : Fedora"
   PKG_MANAGER="dnf"
   PKG_NAME="fuse-sshfs"
+elif echo "$OS" | grep -q "centos"; then
+  _msg info "OS detecté : Centos"
+  PKG_MANAGER="dnf --enablerepo=powertools"
+  PKG_NAME="fuse-sshfs"
 else
   _msg ko "Impossible de detecter l'OS"
-  exit1
+  exit 1
 fi
 
 if $DEBUG; then
