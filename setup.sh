@@ -70,8 +70,8 @@ function main(){
 # Prerequisites
 ## Check Variables
 
-if [ ! $(which sshfs) ]; then
-  if [ ! $(which sudo) ]; then
+if [ ! $(which sshfs 2> /dev/null) ]; then
+  if [ ! $(which sudo 2> /dev/null) ]; then
     _msg ko "Sudo est requis pour installer sshfs."
     cat << EOF
           Si vous ne souhaitez pas installer sudo, vous pouvez installer sshfs par vous même.
@@ -108,7 +108,7 @@ if [ ! -d "$MOUNTPOINT" ]; then
 fi
 
 ## Check if sshfs is installed
-if [ ! $(which sshfs) ]; then
+if [ ! $(which sshfs 2> /dev/null) ]; then
   _msg info "Installation de SSHFS"
   sudo $PKG_MANAGER -qq install $PKG_NAME -y
   if [ $? -eq 0 ]; then
@@ -191,6 +191,10 @@ elif echo "$OS" | grep -q "ubuntu"; then
   _msg info "OS detecté : Ubuntu"
   PKG_MANAGER="apt"
   PKG_NAME="sshfs"
+elif echo "$OS" | grep -q "fedora"; then
+  _msg info "OS detecté : Fedora"
+  PKG_MANAGER="dnf"
+  PKG_NAME="fuse-sshfs"
 else
   _msg ko "Impossible de detecter l'OS"
   exit1
