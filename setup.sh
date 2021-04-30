@@ -24,7 +24,7 @@ function debug(){
   IdentityFile    : $IDENTITYFILE
   MountPoint      : $MOUNTPOINT
   SSHFS Server    : $SSHFS_SRV
-  SSHFS_PORT      : $SSHFS_PORT
+  SSHFS Port      : $SSHFS_PORT
   OS Detected     : $OS
 EOF
 }
