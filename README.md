@@ -55,7 +55,6 @@ Première connexion à votre zclef
 ```bash
 cd /tmp
 ./setup.sh --user <username> --identityfile <path_to_file> [--mountpoint <mountpoint>]
-f
 ```
 nb: --mountpoint est optionnel. Par défaut le montage se fera sur `~/zclef`
 
@@ -84,8 +83,8 @@ sed -i 's/#user_allow_other/user_allow_other/g' /etc/fuse.conf
 Si vous ne souhaitez ou ne pouvez pas modifier le fstab vous pouvez simplement ajouter les deux lignes suivantes à votre ~/.bashrc
 
 ```
-alias zclefon='sshfs -o "StrictHostKeyChecking=accept-new" -o "IdentityFile=$IDENTITYFILE" -o "Port=$SSHFS_PORT" $USER@$SSHFS_SRV:zclef $MOUNTPOINT'
-alias zclefoff="umount $MOUNTPOINT"
+alias zclefon='sshfs -o "StrictHostKeyChecking=accept-new" -o "IdentityFile=<ssh_key>" -o "Port=22" <username>@sshfs.zaclys.com:zclef <mount_point>'
+alias zclefoff="umount <mount_point>"
 ```
 
 Ensuite il vous suffira d'utiliser les deux alias zclefon et zclefoff pour monter et démonter votre zclef
