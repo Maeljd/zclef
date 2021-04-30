@@ -42,7 +42,7 @@ La manipulations suivantes devront être effectuées dans un terminal avec l'uti
 Récupérer le script avec git:
 ```
 cd /tmp
-git clone git@gitlab.com:maelj/zclef.git
+git clone git@gitlab.com:maelj/zclef.git .
 ```
 
 ou le récupérer avec wget:
