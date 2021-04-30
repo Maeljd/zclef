@@ -11,7 +11,7 @@ Ce service est proposé au abonnés de [Zaclys](www.zaclys.com)
 Pour optimiser la sécurité, la connexion au serveur zclef par mot de passe n'est pas autorisée.  
 Il est donc nécessaire de créer une paire de clef.  
 
-Dans un terminal taper la commande suivante:  
+**Dans un terminal taper la commande suivante:**  
 ```
 ssh-keygen -t ed25519 -f ~/.ssh/zaclys_key
 ```
@@ -20,7 +20,7 @@ nb: Il est préférable pour augmenter la sécurité de votre clef d'indiquer un
 
 ### Demander la création de votre Zclef
 
-Afficher la clef publique précédemment crée:
+**Afficher la clef publique précédemment crée:**  
 ```
 john@doe:~$cat ~/.ssh/zaclys_key.pub
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICjyNAEgg7H0FojAh9yyXNzlzYIsr+3+JFjoxs+fBgvz
@@ -39,21 +39,21 @@ Une fois le mail confirmant la création de votre compte reçu vous êtes prêt 
 
 La manipulations suivantes devront être effectuées dans un terminal avec l'utilisateur destiné à se connecter à votre zclef.  
 
-Récupérer le script avec git:
+**1a. Récupérer le script avec git:**  
 ```
 cd /tmp
-git clone git@gitlab.com:maelj/zclef.git .
+git clone git@gitlab.com:maelj/zclef.git
 ```
 
-ou le récupérer avec wget:
+**1b. ou le récupérer avec wget:**  
 ```
-cd /tmp
+mkdir /tmp/zclef && cd /tmp/zclef
 wget https://gitlab.com/maelj/zclef/-/raw/master/setup.sh
 ```
 
-Première connexion à votre zclef
+**Première connexion à votre zclef:**  
 ```bash
-cd /tmp
+cd /tmp/zclef
 ./setup.sh --user <username> --identityfile <path_to_file> [--mountpoint <mountpoint>]
 ```
 nb: --mountpoint est optionnel. Par défaut le montage se fera sur `~/zclef`
@@ -61,7 +61,7 @@ nb: --mountpoint est optionnel. Par défaut le montage se fera sur `~/zclef`
 
 ## Utilisation
 
-Une fois la première connexion établie le script affichera deux options pour votre utilisation futur.  
+Une fois la première connexion établie le script proposera deux options pour votre utilisation futur.  
 
 ### Via fstab
 
@@ -73,7 +73,7 @@ Si vous le souhaitez vous pouvez ajouter la ligne suivante dans votre fichier /e
 Pensez à personnaliser votre `username`, `mount_point`, `ssh_key`  
 nb: il est important d'indiquer un chemin absolue pour votre clef publique
 
-Il est également necessaire de décommenter la ligne user_allow_other dans /etc/fuse.conf:
+Il est également nécessaire de dé-commenter la ligne `user_allow_other` dans `/etc/fuse.conf`:
 ```
 sed -i 's/#user_allow_other/user_allow_other/g' /etc/fuse.conf
 ```
@@ -87,7 +87,7 @@ alias zclefon='sshfs -o "StrictHostKeyChecking=accept-new" -o "IdentityFile=<ssh
 alias zclefoff="umount <mount_point>"
 ```
 
-Ensuite il vous suffira d'utiliser les deux alias zclefon et zclefoff pour monter et démonter votre zclef
+Ensuite il vous suffira d'utiliser les deux alias `zclefon` et `zclefoff` pour monter et démonter votre zclef
 
 
 # OS supportés / testés
