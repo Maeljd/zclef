@@ -51,7 +51,7 @@ mkdir /tmp/zclef && cd /tmp/zclef
 wget https://gitlab.com/maelj/zclef/-/raw/master/setup.sh
 ```
 
-**Première connexion à votre zclef:**  
+**2. Première connexion à votre zclef:**  
 ```bash
 cd /tmp/zclef
 ./setup.sh --user <username> --identityfile <path_to_file> [--mountpoint <mountpoint>]
