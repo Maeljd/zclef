@@ -172,7 +172,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     -m | --mountpoint)
-      MOUNTPOINT="$2";
+      MOUNTPOINT="$(readlink -f $2)";
       shift 2
       ;;
       *)
