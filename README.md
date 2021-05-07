@@ -42,13 +42,13 @@ La manipulations suivantes devront être effectuées dans un terminal avec l'uti
 **1a. Récupérer le script avec git:**  
 ```
 cd /tmp
-git clone git@gitlab.com:maelj/zclef.git
+git clone git@gitlab.com:snax44/zclef.git
 ```
 
 **1b. ou le récupérer avec wget:**  
 ```
 mkdir /tmp/zclef && cd /tmp/zclef
-wget https://gitlab.com/maelj/zclef/-/raw/master/setup.sh
+wget https://gitlab.com/snax44/zclef/-/raw/master/setup.sh
 ```
 
 **2. Première connexion à votre zclef:**  
