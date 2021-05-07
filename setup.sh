@@ -6,12 +6,15 @@
 # Version: 1.0
 # Desc:
 #   - Configurer la première connexion au sevice zclef de Zaclys
-#   - Support Debian / Ubuntu
+#   - Ce script n'a été testé que sur les distribution / versions suivantes:
+#     - Debian 10, Ubuntu 20.10, Fedora 33, Centos 8
 #   - Ne necessite sudo ou root que pour l'installation de sshfs.
 #     - Si sshfs est déjà installé pas de droits particuliers requis.
 #   - Montage par défaut dans ~/zclef
 ###
 
+# Passer cette variable afin de n'efectuer aucune modification sur le système.
+# Seule la fonction debug sera appelé afin de vérifier la cohérence des variables et de leurs contenu.
 DEBUG=false
 
 SSHFS_SRV="sshfs.zaclys.com"
@@ -67,9 +70,10 @@ function _msg(){
 }
 
 function main(){
-# Prerequisites
-## Check Variables
+# Prerequis
 
+## Si sshfs n'est pas installé sudo sera alors necessaire.
+## Si aucun des deux ne sont présents l'utilisateur devra installer sshfs par lui même.
 if [ ! $(which sshfs 2> /dev/null) ]; then
   if [ ! $(which sudo 2> /dev/null) ]; then
     _msg ko "Sudo est requis pour installer sshfs."
@@ -81,24 +85,26 @@ EOF
   fi
 fi
 
+## Les variables ne doivents pas être vide.
 if [ -z $USER ]; then
   _msg ko "Votre nom d'utilisateur est manquant"
   usage
   exit 1
 fi
 
+## et les fichiers doivent être accessibles
 if [ ! -f $IDENTITYFILE ] || [ -z $IDENTITYFILE ]; then
   _msg ko "Votre clef privé est manquante ou introuvable"
   exit 1
 fi
 
-## Check if MountPoint is define, if not use the default ~/zclef
+## Si aucun point de montage n'a été défini alors ~/zclef sera utilisé
 if [ -z $MOUNTPOINT ];then
   _msg info "Le point de montage n'est pas spécifié. La zclef sera monté sur $HOME/zclef"
   MOUNTPOINT="$HOME/zclef"
 fi
 
-## Create MountPoint
+## Création du point de montage
 if [ ! -d "$MOUNTPOINT" ]; then
   mkdir -p $MOUNTPOINT 2> /dev/null
   if [ $? -ne 0 ]; then
@@ -107,7 +113,7 @@ if [ ! -d "$MOUNTPOINT" ]; then
   fi
 fi
 
-## Check if sshfs is installed
+## Installation de sshfs si necessaire.
 if [ ! $(which sshfs 2> /dev/null) ]; then
   _msg info "Installation de SSHFS"
   sudo $PKG_MANAGER -qq install $PKG_NAME -y
@@ -119,7 +125,7 @@ if [ ! $(which sshfs 2> /dev/null) ]; then
   fi
 fi
 
-# Time to mount Zclef
+# Montage de la zclef
 sshfs -o "StrictHostKeyChecking=accept-new" -o "IdentityFile=$IDENTITYFILE" -o "Port=$SSHFS_PORT" "$USER"@"$SSHFS_SRV":zclef $MOUNTPOINT
 
 if [ $? -eq 0 ]; then
@@ -167,7 +173,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     -i | --identityfile)
-      # Convert relativ path to absolute path (required by sshfs options)
+      # Conversion d'un eventuel chemin relatif en absolue (requis pour sshfs)
       IDENTITYFILE="$(readlink -f $2)";
       shift 2
       ;;
@@ -183,6 +189,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+# Detection de la distribution et adaptation du nom du paquet sshfs.
 if echo "$OS" | grep -q "debian"; then
   _msg info "OS detecté : Debian"
   PKG_MANAGER="apt"
