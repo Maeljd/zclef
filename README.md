@@ -1,7 +1,7 @@
 # zclef Setup
 
 Script pour simplifier la première connection à votre zclef  
-Ce service est proposé au abonnés de [Zaclys](www.zaclys.com)
+Ce service est proposé au abonnés de [Zaclys](https://www.zaclys.com)
 - [Lien vers le service](https://www.zaclys.com/zcle/)
 - [Wiki](https://wiki.zaclys.com/index.php/Installation_de_la_zclef_sous_Linux)
 
